@@ -106,7 +106,6 @@
 // Controls
 - (void)cancelControlHiding;
 - (void)hideControlsAfterDelay;
-- (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated permanent:(BOOL)permanent;
 - (void)toggleControls;
 - (BOOL)areControlsHidden;
 
@@ -419,7 +418,8 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 #pragma mark - Nav Bar Appearance
 
 - (void)setNavBarAppearance:(BOOL)animated {
-    self.navigationController.navigationBar.tintColor = nil;
+    
+    self.navigationController.navigationBar.tintColor = self.navigationBarTintColor;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
         [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];

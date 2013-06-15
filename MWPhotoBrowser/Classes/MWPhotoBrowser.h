@@ -35,6 +35,7 @@
 @property (nonatomic) BOOL displayActionButton;
 @property (nonatomic) BOOL displayActionBar;
 @property (nonatomic, strong) UIColor *backgroundColorForPages;
+@property (nonatomic, strong) UIColor *navigationBarTintColor;
 
 // Init
 - (id)initWithPhotos:(NSArray *)photosArray  __attribute__((deprecated)); // Depreciated
@@ -45,6 +46,9 @@
 
 // Set page that photo browser starts on
 - (void)setInitialPageIndex:(NSUInteger)index;
+
+// Navigation Bar Controls
+- (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated permanent:(BOOL)permanent;
 
 @end
 
