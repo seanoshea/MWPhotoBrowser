@@ -33,6 +33,8 @@
 
 // Properties
 @property (nonatomic) BOOL displayActionButton;
+@property (nonatomic) BOOL displayActionBar;
+@property (nonatomic, strong) UIColor *backgroundColorForPages;
 
 // Init
 - (id)initWithPhotos:(NSArray *)photosArray  __attribute__((deprecated)); // Depreciated

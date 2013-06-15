@@ -30,6 +30,7 @@
 
 @property (nonatomic, retain) MWCaptionView *captionView;
 @property (nonatomic, retain) id<MWPhoto> photo;
+@property (nonatomic, strong) UIColor *backgroundColorForPages;
 
 - (id)initWithPhotoBrowser:(MWPhotoBrowser *)browser;
 - (void)displayImage;

@@ -286,4 +286,10 @@
     [self handleDoubleTap:[touch locationInView:view]];
 }
 
+- (void)setBackgroundColorForPages:(UIColor *)backgroundColorForPages {
+    self.backgroundColor = backgroundColorForPages;
+    _tapView.backgroundColor = backgroundColorForPages;
+    _photoImageView.backgroundColor = backgroundColorForPages;
+}
+
 @end
