@@ -597,8 +597,14 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	if (photo) {
 		// Get image or obtain in background
 		if ([photo underlyingImage]) {
+            if ([_delegate respondsToSelector:@selector(loadedImage)]) {
+                [_delegate loadedImage];
+            }
 			return [photo underlyingImage];
 		} else {
+            if ([_delegate respondsToSelector:@selector(loadingImage)]) {
+                [_delegate loadingImage];
+            }
             [photo loadUnderlyingImageAndNotify];
 		}
 	}
@@ -1059,8 +1065,8 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 - (MBProgressHUD *)progressHUD {
     if (!_progressHUD) {
         _progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
-        _progressHUD.minSize = CGSizeMake(120, 120);
-        _progressHUD.minShowTime = 1;
+        _progressHUD.minSize = CGSizeMake(80, 80);
+        _progressHUD.minShowTime = 0.5;
         // The sample image is based on the
         // work by: http://www.pixelpressicons.com
         // licence: http://creativecommons.org/licenses/by/2.5/ca/

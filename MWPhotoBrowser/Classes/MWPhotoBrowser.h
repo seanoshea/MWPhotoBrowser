@@ -27,6 +27,8 @@
 @optional
 - (MWCaptionView *)photoBrowser:(MWPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index;
 - (void)navigationUpdatedWithCurrentIndex:(NSUInteger)currentIndex;
+- (void)loadingImage;
+- (void)loadedImage;
 @end
 
 // MWPhotoBrowser
@@ -50,6 +52,10 @@
 
 // Navigation Bar Controls
 - (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated permanent:(BOOL)permanent;
+
+// HUD Controls
+- (void)showProgressHUDWithMessage:(NSString *)message;
+- (void)hideProgressHUD:(BOOL)animated;
 
 @end
 
