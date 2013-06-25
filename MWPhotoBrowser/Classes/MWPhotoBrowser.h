@@ -61,6 +61,9 @@
 // Image Gesture Recognizers
 - (void)handleLongPress;
 
+// Actions
+- (void)savePhoto;
+
 @end
 
 
