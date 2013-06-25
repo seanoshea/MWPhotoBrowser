@@ -29,6 +29,7 @@
 - (void)navigationUpdatedWithCurrentIndex:(NSUInteger)currentIndex;
 - (void)loadingImage;
 - (void)loadedImage;
+- (void)handleLongPress;
 @end
 
 // MWPhotoBrowser
@@ -56,6 +57,9 @@
 // HUD Controls
 - (void)showProgressHUDWithMessage:(NSString *)message;
 - (void)hideProgressHUD:(BOOL)animated;
+
+// Image Gesture Recognizers
+- (void)handleLongPress;
 
 @end
 

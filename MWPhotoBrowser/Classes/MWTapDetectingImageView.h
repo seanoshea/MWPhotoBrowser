@@ -17,6 +17,7 @@
 - (void)handleSingleTap:(UITouch *)touch;
 - (void)handleDoubleTap:(UITouch *)touch;
 - (void)handleTripleTap:(UITouch *)touch;
+- (void)handleLongPress:(UITouch *)touch;
 @end
 
 @protocol MWTapDetectingImageViewDelegate <NSObject>
@@ -24,4 +25,5 @@
 - (void)imageView:(UIImageView *)imageView singleTapDetected:(UITouch *)touch;
 - (void)imageView:(UIImageView *)imageView doubleTapDetected:(UITouch *)touch;
 - (void)imageView:(UIImageView *)imageView tripleTapDetected:(UITouch *)touch;
+- (void)imageView:(UIImageView *)imageView longPressDetected:(UITouch *)touch;
 @end

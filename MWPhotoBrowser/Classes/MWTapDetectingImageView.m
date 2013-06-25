@@ -16,6 +16,7 @@
 	if ((self = [super initWithFrame:frame])) {
 		self.userInteractionEnabled = YES;
 	}
+    [self addLongPressGestureRecognizer];
 	return self;
 }
 
@@ -23,6 +24,7 @@
 	if ((self = [super initWithImage:image])) {
 		self.userInteractionEnabled = YES;
 	}
+    [self addLongPressGestureRecognizer];
 	return self;
 }
 
@@ -30,6 +32,7 @@
 	if ((self = [super initWithImage:image highlightedImage:highlightedImage])) {
 		self.userInteractionEnabled = YES;
 	}
+    [self addLongPressGestureRecognizer];
 	return self;
 }
 
@@ -65,6 +68,17 @@
 - (void)handleTripleTap:(UITouch *)touch {
 	if ([tapDelegate respondsToSelector:@selector(imageView:tripleTapDetected:)])
 		[tapDelegate imageView:self tripleTapDetected:touch];
+}
+
+- (void)handleLongPress:(UITouch *)touch {
+	if ([tapDelegate respondsToSelector:@selector(imageView:longPressDetected:)])
+		[tapDelegate imageView:self longPressDetected:touch];
+}
+
+- (void)addLongPressGestureRecognizer {
+    UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    recognizer.minimumPressDuration = 0.5;
+    [self addGestureRecognizer:recognizer];
 }
 
 @end

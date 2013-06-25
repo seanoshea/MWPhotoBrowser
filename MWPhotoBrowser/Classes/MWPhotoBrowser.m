@@ -1100,6 +1100,12 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     self.navigationController.navigationBar.userInteractionEnabled = YES;
 }
 
+- (void)handleLongPress {
+    if ([_delegate respondsToSelector:@selector(handleLongPress)]) {
+        [_delegate handleLongPress];
+    }
+}
+
 #pragma mark - Actions
 
 - (void)savePhoto {
