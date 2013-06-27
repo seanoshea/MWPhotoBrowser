@@ -36,7 +36,6 @@
 	
 	// Paging
 	NSMutableSet *_visiblePages, *_recycledPages;
-	NSUInteger _currentPageIndex;
 	NSUInteger _pageIndexBeforeRotation;
 	
 	// Navigation & controls
@@ -69,6 +68,7 @@
 @property (nonatomic, retain) UIImage *navigationBarBackgroundImageDefault, *navigationBarBackgroundImageLandscapePhone;
 @property (nonatomic, retain) UIActionSheet *actionsSheet;
 @property (nonatomic, retain) MBProgressHUD *progressHUD;
+@property (nonatomic, readwrite) NSInteger currentPageIndex;
 
 // Private Methods
 
@@ -149,7 +149,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
         self.wantsFullScreenLayout = YES;
         self.hidesBottomBarWhenPushed = YES;
         _photoCount = NSNotFound;
-		_currentPageIndex = 0;
+        _currentPageIndex = 0;
 		_performingLayout = NO; // Reset on view did appear
 		_rotating = NO;
         _viewIsActive = NO;
@@ -330,7 +330,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     }
     
     // Content offset
-	_pagingScrollView.contentOffset = [self contentOffsetForPageAtIndex:_currentPageIndex];
+	_pagingScrollView.contentOffset = [self contentOffsetForPageAtIndex:self.currentPageIndex];
     [self tilePages];
     _performingLayout = NO;
     
@@ -338,7 +338,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 
 // Release any retained subviews of the main view.
 - (void)viewDidUnload {
-	_currentPageIndex = 0;
+	self.currentPageIndex = 0;
     [_pagingScrollView release], _pagingScrollView = nil;
     [_visiblePages release], _visiblePages = nil;
     [_recycledPages release], _recycledPages = nil;
@@ -468,7 +468,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	_toolbar.frame = [self frameForToolbarAtOrientation:self.interfaceOrientation];
 	
 	// Remember index
-	NSUInteger indexPriorToLayout = _currentPageIndex;
+	NSUInteger indexPriorToLayout = self.currentPageIndex;
 	
 	// Get paging scroll view frame to determine if anything needs changing
 	CGRect pagingScrollViewFrame = [self frameForPagingScrollView];
@@ -489,10 +489,10 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	
 	// Adjust contentOffset to preserve page location based on values collected prior to location
 	_pagingScrollView.contentOffset = [self contentOffsetForPageAtIndex:indexPriorToLayout];
-	[self didStartViewingPageAtIndex:_currentPageIndex]; // initial
+	[self didStartViewingPageAtIndex:self.currentPageIndex]; // initial
     
 	// Reset
-	_currentPageIndex = indexPriorToLayout;
+	self.currentPageIndex = indexPriorToLayout;
 	_performingLayout = NO;
     
 }
@@ -506,7 +506,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     
 	// Remember page index before rotation
-	_pageIndexBeforeRotation = _currentPageIndex;
+	_pageIndexBeforeRotation = self.currentPageIndex;
 	_rotating = YES;
 	
 }
@@ -514,7 +514,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	
 	// Perform layout
-	_currentPageIndex = _pageIndexBeforeRotation;
+	self.currentPageIndex = _pageIndexBeforeRotation;
     
 	// Layout manually (iOS < 5)
     if (SYSTEM_VERSION_LESS_THAN(@"5")) [self viewWillLayoutSubviews];
@@ -616,7 +616,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     if (page) {
         // If page is current page then initiate loading of previous and next pages
         NSUInteger pageIndex = PAGE_INDEX(page);
-        if (_currentPageIndex == pageIndex) {
+        if (self.currentPageIndex == pageIndex) {
             if (pageIndex > 0) {
                 // Preload index - 1
                 id <MWPhoto> photo = [self photoAtIndex:pageIndex-1];
@@ -852,9 +852,9 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	int index = (int)(floorf(CGRectGetMidX(visibleBounds) / CGRectGetWidth(visibleBounds)));
     if (index < 0) index = 0;
 	if (index > [self numberOfPhotos] - 1) index = [self numberOfPhotos] - 1;
-	NSUInteger previousCurrentPage = _currentPageIndex;
-	_currentPageIndex = index;
-	if (_currentPageIndex != previousCurrentPage) {
+	NSUInteger previousCurrentPage = self.currentPageIndex;
+	self.currentPageIndex = index;
+	if (self.currentPageIndex != previousCurrentPage) {
         [self didStartViewingPageAtIndex:index];
     }
 	
@@ -876,18 +876,18 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     
 	// Title
 	if ([self numberOfPhotos] > 1) {
-		self.title = [NSString stringWithFormat:@"%i %@ %i", _currentPageIndex+1, NSLocalizedString(@"of", @"Used in the context: 'Showing 1 of 3 items'"), [self numberOfPhotos]];		
+		self.title = [NSString stringWithFormat:@"%i %@ %i", self.currentPageIndex+1, NSLocalizedString(@"of", @"Used in the context: 'Showing 1 of 3 items'"), [self numberOfPhotos]];		
 	} else {
 		self.title = nil;
 	}
     
     if ([_delegate respondsToSelector:@selector(navigationUpdatedWithCurrentIndex:)]) {
-        [_delegate navigationUpdatedWithCurrentIndex:_currentPageIndex];
+        [_delegate navigationUpdatedWithCurrentIndex:self.currentPageIndex];
     }
 	
 	// Buttons
-	_previousButton.enabled = (_currentPageIndex > 0);
-	_nextButton.enabled = (_currentPageIndex < [self numberOfPhotos]-1);
+	_previousButton.enabled = (self.currentPageIndex > 0);
+	_nextButton.enabled = (self.currentPageIndex < [self numberOfPhotos]-1);
 	
 }
 
@@ -905,8 +905,8 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	
 }
 
-- (void)gotoPreviousPage { [self jumpToPageAtIndex:_currentPageIndex-1]; }
-- (void)gotoNextPage { [self jumpToPageAtIndex:_currentPageIndex+1]; }
+- (void)gotoPreviousPage { [self jumpToPageAtIndex:self.currentPageIndex-1]; }
+- (void)gotoNextPage { [self jumpToPageAtIndex:self.currentPageIndex+1]; }
 
 #pragma mark - Control Hiding / Showing
 
@@ -996,7 +996,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 - (void)setInitialPageIndex:(NSUInteger)index {
     // Validate
     if (index >= [self numberOfPhotos]) index = [self numberOfPhotos]-1;
-    _currentPageIndex = index;
+    self.currentPageIndex = index;
 	if ([self isViewLoaded]) {
         [self jumpToPageAtIndex:index];
         if (!_viewIsActive) [self tilePages]; // Force tiling if view is not visible
@@ -1014,7 +1014,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
         // Dismiss
         [_actionsSheet dismissWithClickedButtonIndex:_actionsSheet.cancelButtonIndex animated:YES];
     } else {
-        id <MWPhoto> photo = [self photoAtIndex:_currentPageIndex];
+        id <MWPhoto> photo = [self photoAtIndex:self.currentPageIndex];
         if ([self numberOfPhotos] > 0 && [photo underlyingImage]) {
             
             // Keep controls hidden
@@ -1109,7 +1109,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 #pragma mark - Actions
 
 - (void)savePhoto {
-    id <MWPhoto> photo = [self photoAtIndex:_currentPageIndex];
+    id <MWPhoto> photo = [self photoAtIndex:self.currentPageIndex];
     if ([photo underlyingImage]) {
         [self showProgressHUDWithMessage:[NSString stringWithFormat:@"%@\u2026" , NSLocalizedString(@"Saving", @"Displayed with ellipsis as 'Saving...' when an item is in the process of being saved")]];
         [self performSelector:@selector(actuallySavePhoto:) withObject:photo afterDelay:0];
@@ -1129,7 +1129,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 }
 
 - (void)copyPhoto {
-    id <MWPhoto> photo = [self photoAtIndex:_currentPageIndex];
+    id <MWPhoto> photo = [self photoAtIndex:self.currentPageIndex];
     if ([photo underlyingImage]) {
         [self showProgressHUDWithMessage:[NSString stringWithFormat:@"%@\u2026" , NSLocalizedString(@"Copying", @"Displayed with ellipsis as 'Copying...' when an item is in the process of being copied")]];
         [self performSelector:@selector(actuallyCopyPhoto:) withObject:photo afterDelay:0];
@@ -1146,7 +1146,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 }
 
 - (void)emailPhoto {
-    id <MWPhoto> photo = [self photoAtIndex:_currentPageIndex];
+    id <MWPhoto> photo = [self photoAtIndex:self.currentPageIndex];
     if ([photo underlyingImage]) {
         [self showProgressHUDWithMessage:[NSString stringWithFormat:@"%@\u2026" , NSLocalizedString(@"Preparing", @"Displayed with ellipsis as 'Preparing...' when an item is in the process of being prepared")]];
         [self performSelector:@selector(actuallyEmailPhoto:) withObject:photo afterDelay:0];

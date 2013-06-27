@@ -40,6 +40,7 @@
 @property (nonatomic) BOOL displayActionBar;
 @property (nonatomic, strong) UIColor *backgroundColorForPages;
 @property (nonatomic, strong) UIColor *navigationBarTintColor;
+@property (nonatomic, readonly) NSInteger currentPageIndex;
 
 // Init
 - (id)initWithPhotos:(NSArray *)photosArray  __attribute__((deprecated)); // Depreciated
