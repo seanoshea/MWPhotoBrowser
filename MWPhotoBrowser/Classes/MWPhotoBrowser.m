@@ -596,8 +596,8 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	if (photo) {
 		// Get image or obtain in background
 		if ([photo underlyingImage]) {
-            if ([_delegate respondsToSelector:@selector(loadedImage)]) {
-                [_delegate loadedImage];
+            if ([_delegate respondsToSelector:@selector(loadedImage:)]) {
+                [_delegate loadedImage:photo];
             }
 			return [photo underlyingImage];
 		} else {

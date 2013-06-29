@@ -28,7 +28,7 @@
 - (MWCaptionView *)photoBrowser:(MWPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index;
 - (void)navigationUpdatedWithCurrentIndex:(NSUInteger)currentIndex;
 - (void)loadingImage;
-- (void)loadedImage;
+- (void)loadedImage:(id<MWPhoto>)photo;
 - (void)handleLongPress;
 @end
 
