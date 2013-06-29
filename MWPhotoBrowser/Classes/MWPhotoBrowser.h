@@ -65,6 +65,9 @@
 // Actions
 - (void)savePhoto;
 
+// Retrieving photos
+- (id<MWPhoto>)photoAtIndex:(NSUInteger)index;
+
 @end
 
 
