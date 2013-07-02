@@ -36,6 +36,7 @@
 @interface MWPhotoBrowser : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> 
 
 // Properties
+@property (nonatomic) BOOL neverHideControls;
 @property (nonatomic) BOOL displayActionButton;
 @property (nonatomic) BOOL displayActionBar;
 @property (nonatomic, strong) UIColor *backgroundColorForPages;

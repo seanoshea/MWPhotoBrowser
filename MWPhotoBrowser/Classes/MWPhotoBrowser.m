@@ -912,6 +912,10 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 // If permanent then we don't set timers to hide again
 - (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated permanent:(BOOL)permanent {
     
+    if (self.neverHideControls) {
+        return;
+    }
+    
     // Cancel any timers
     [self cancelControlHiding];
 	
