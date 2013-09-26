@@ -55,6 +55,7 @@
 
 // Navigation Bar Controls
 - (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated permanent:(BOOL)permanent;
+- (void)toggleControls;
 
 // HUD Controls
 - (void)showProgressHUDWithMessage:(NSString *)message;

@@ -76,7 +76,6 @@
 - (void)performLayout;
 
 // Nav Bar Appearance
-- (void)setNavBarAppearance:(BOOL)animated;
 - (void)storePreviousNavBarAppearance;
 - (void)restorePreviousNavBarAppearance:(BOOL)animated;
 
@@ -106,7 +105,6 @@
 // Controls
 - (void)cancelControlHiding;
 - (void)hideControlsAfterDelay;
-- (void)toggleControls;
 - (BOOL)areControlsHidden;
 
 // Data
@@ -368,7 +366,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     if (!_viewIsActive && [self.navigationController.viewControllers objectAtIndex:0] != self) {
         [self storePreviousNavBarAppearance];
     }
-    [self setNavBarAppearance:animated];
     
     // Update UI
 	[self hideControlsAfterDelay];
@@ -415,16 +412,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 }
 
 #pragma mark - Nav Bar Appearance
-
-- (void)setNavBarAppearance:(BOOL)animated {
-    
-    self.navigationController.navigationBar.tintColor = self.navigationBarTintColor;
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-    if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
-        [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsLandscapePhone];
-    }
-}
 
 - (void)storePreviousNavBarAppearance {
     _didSavePreviousStateOfNavBar = YES;
@@ -961,8 +948,8 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
         [UIView setAnimationDuration:0.35];
     }
     CGFloat alpha = hidden ? 0 : 1;
-	[self.navigationController.navigationBar setAlpha:alpha];
-	[_toolbar setAlpha:alpha];
+//	[self.navigationController.navigationBar setAlpha:alpha];
+//	[_toolbar setAlpha:alpha];
     for (UIView *v in captionViews) v.alpha = alpha;
 	if (animated) [UIView commitAnimations];
 	
