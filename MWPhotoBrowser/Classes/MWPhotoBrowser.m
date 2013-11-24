@@ -898,7 +898,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 
 // If permanent then we don't set timers to hide again
 - (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated permanent:(BOOL)permanent {
-    
+
     if (self.neverHideControls) {
         return;
     }
@@ -1057,6 +1057,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
         _progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
         _progressHUD.minSize = CGSizeMake(80, 80);
         _progressHUD.minShowTime = 0.5;
+        _progressHUD.userInteractionEnabled = NO;
         // The sample image is based on the
         // work by: http://www.pixelpressicons.com
         // licence: http://creativecommons.org/licenses/by/2.5/ca/
@@ -1070,12 +1071,10 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     self.progressHUD.labelText = message;
     self.progressHUD.mode = MBProgressHUDModeIndeterminate;
     [self.progressHUD show:YES];
-    self.navigationController.navigationBar.userInteractionEnabled = NO;
 }
 
 - (void)hideProgressHUD:(BOOL)animated {
     [self.progressHUD hide:animated];
-    self.navigationController.navigationBar.userInteractionEnabled = YES;
 }
 
 - (void)showProgressHUDCompleteMessage:(NSString *)message {
@@ -1087,7 +1086,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     } else {
         [self.progressHUD hide:YES];
     }
-    self.navigationController.navigationBar.userInteractionEnabled = YES;
 }
 
 - (void)handleLongPress {
